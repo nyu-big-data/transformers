@@ -16,7 +16,7 @@
 
 try:
     from scipy.stats import pearsonr, spearmanr
-    from sklearn.metrics import matthews_corrcoef, f1_score
+    from sklearn.metrics import matthews_corrcoef, f1_score, confusion_matrix
 
     _has_sklearn = True
 except (AttributeError, ImportError):
@@ -49,6 +49,12 @@ if _has_sklearn:
             "spearmanr": spearman_corr,
             "corr": (pearson_corr + spearman_corr) / 2,
         }
+    
+    def confusion_matrix(preds, labels):
+        confusion_matrix = confusion_matrix(labels, preds)
+        return {
+            "cm" : confusion_matrix,
+        }
 
     def glue_compute_metrics(task_name, preds, labels):
         assert len(preds) == len(labels)
@@ -75,7 +81,7 @@ if _has_sklearn:
         elif task_name == "hans":
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "bac":
-            return {"acc": simple_accuracy(preds, labels)}
+            return {"cm": confusion_matrix(preds, labels)}
         elif task_name == "bac_gender":
             return {"acc": simple_accuracy(preds, labels)}
         else:
