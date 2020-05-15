@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import sys
+import pandas as pd
 sys.setrecursionlimit(10000)
 
 try:
@@ -83,7 +84,10 @@ if _has_sklearn:
         elif task_name == "hans":
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "bac":
-            return {"cm": conf_matrix(preds, labels)}
+            outputs = pd.DataFrame(preds, columns=['prediction'])
+            outputs['label'] = labels
+            pd.to_csv(outputs, index=False)
+            #return {"cm": conf_matrix(preds, labels)}
         elif task_name == "bac_gender":
             return {"acc": simple_accuracy(preds, labels)}
         else:
