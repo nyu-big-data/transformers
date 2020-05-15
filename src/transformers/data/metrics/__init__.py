@@ -86,7 +86,7 @@ if _has_sklearn:
         elif task_name == "bac":
             outputs = pd.DataFrame(preds, columns=['prediction'])
             outputs['label'] = labels
-            pd.to_csv(outputs, index=False)
+            outputs.to_csv('/scratch/ctd299', index=False)
             #return {"cm": conf_matrix(preds, labels)}
         elif task_name == "bac_gender":
             return {"acc": simple_accuracy(preds, labels)}
