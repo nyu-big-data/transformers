@@ -37,6 +37,8 @@ from transformers import (
     set_seed,
 )
 
+import sys
+sys.setrecursionlimit(10000)
 
 logger = logging.getLogger(__name__)
 
