@@ -52,7 +52,7 @@ if _has_sklearn:
             "corr": (pearson_corr + spearman_corr) / 2,
         }
     
-    def confusion_matrix(preds, labels):
+    def conf_matrix(preds, labels):
         cm = confusion_matrix(labels, preds)
         return {
             "cm" : cm,
@@ -83,7 +83,7 @@ if _has_sklearn:
         elif task_name == "hans":
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "bac":
-            return {"cm": confusion_matrix(preds, labels)}
+            return {"cm": conf_matrix(preds, labels)}
         elif task_name == "bac_gender":
             return {"acc": simple_accuracy(preds, labels)}
         else:
