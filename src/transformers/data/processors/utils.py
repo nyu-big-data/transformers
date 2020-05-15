@@ -25,8 +25,6 @@ from ...file_utils import is_tf_available, is_torch_available
 
 import sys
 
-csv.field_size_limit(sys.maxsize)
-
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +113,7 @@ class DataProcessor:
 
     @classmethod
     def _read_tsv(cls, input_file, quotechar=None):
+        csv.field_size_limit(sys.maxsize)
         """Reads a tab separated value file."""
         with open(input_file, "r", encoding="utf-8-sig") as f:
             return list(csv.reader(f, delimiter="\t", quotechar=quotechar))
