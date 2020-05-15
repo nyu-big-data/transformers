@@ -543,6 +543,40 @@ class BACGenderProcessor(DataProcessor):
             examples.append(InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
         return examples
 
+class BACProcessor(DataProcessor):
+    """Processor for the blog authorship corpus data set."""
+
+    def get_example_from_tensor_dict(self, tensor_dict):
+        """See base class."""
+        return InputExample(
+            tensor_dict["idx"].numpy(),
+            tensor_dict["text"].numpy().decode("utf-8"),
+            str(tensor_dict["label"].numpy()),
+        )
+
+    def get_train_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "bac_gender_train.tsv")), "train")
+
+    def get_dev_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "bac_gender_val.tsv")), "dev")
+
+    def get_labels(self):
+        """See base class."""
+        return ["0", "1", "2"]
+
+    def _create_examples(self, lines, set_type):
+        """Creates examples for the training and dev sets."""
+        examples = []
+        for (i, line) in enumerate(lines):
+            if i == 0:
+                continue
+            guid = "%s-%s" % (set_type, line[0])
+            text_a = line[1]
+            label = line[-1]
+            examples.append(InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+        return examples
 
 glue_tasks_num_labels = {
     "cola": 2,
@@ -555,6 +589,7 @@ glue_tasks_num_labels = {
     "rte": 2,
     "wnli": 2,
     "bac_gender": 2,
+    "bac": 3,
 }
 
 glue_processors = {
@@ -569,6 +604,7 @@ glue_processors = {
     "rte": RteProcessor,
     "wnli": WnliProcessor,
     "bac_gender": BACGenderProcessor,
+    "bac": BACProcessor,
 }
 
 glue_output_modes = {
@@ -583,4 +619,5 @@ glue_output_modes = {
     "rte": "classification",
     "wnli": "classification",
     "bac_gender": "classification",
+    "bac": "classification",
 }
