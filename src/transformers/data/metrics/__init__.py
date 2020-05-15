@@ -51,9 +51,9 @@ if _has_sklearn:
         }
     
     def confusion_matrix(preds, labels):
-        confusion_matrix = confusion_matrix(labels, preds)
+        cm = confusion_matrix(labels, preds)
         return {
-            "cm" : confusion_matrix,
+            "cm" : cm,
         }
 
     def glue_compute_metrics(task_name, preds, labels):
